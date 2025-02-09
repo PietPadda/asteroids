@@ -28,3 +28,8 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt):
         # Sub-classes should define behavior based on dt (delta time)
         pass
+
+    # collision detection between circles
+    def collision(self, object):  # circleshape objects
+        distance = self.position.distance_to(object.position)  # measure distance between 2 vectors (.position is a pygame.Vector2)
+        return distance <= self.radius + object.radius  # check if dist >= r1+r2 of circles, True if colliding else false

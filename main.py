@@ -56,6 +56,12 @@ def main():
         # update all updatable models model
         updatable.update(dt)  # call update method to allow rotation -- must be BEFORE draw...
 
+        # after update positions, do collision check of asteroids v player
+        for asteroid in asteroids:
+            if asteroid.collision(player):  # check all asteroids v player
+                print("Game Over!")  # last bit of text...
+                return  # exit game
+
         # Draw all sprites
         for sprite in drawable:
             sprite.draw(screen)  # after filling to layer on top, before refreshing to stay
