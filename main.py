@@ -17,28 +17,38 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    # instantiate a Player (ship) object
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)  # x/y to spawn in middle of screen
+    # Set up sprite groups (empty for now)
+    updatable = pygame.sprite.Group()  # objects that can update
+    drawable = pygame.sprite.Group()  #all objects that can be rendered
 
-    # Game Speed
+    # Class variables (static fields) container, then container
+    # Register groups with Player class
+    Player.containers = (updatable, drawable)
+
+    # Create player in centre of screen
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    # Setup game clcok
     clock = pygame.time.Clock()  # create an clock object to set frame rate
-    dt = 0  # delta time to decouple game's speed from drawing speed
+    dt = 0  # delta time in seconds
     
-    # Game loop!
+    # Main game loop
     while True:
-        # close window check
+        # Handle window close
         for event in pygame.event.get():  # check if button pressed
             if event.type == pygame.QUIT:  # if X on window is pressed
                 return  # exit the game
-        screen.fill((0,0,0))  # pygame method, fill screen with RGB "black"
+            
+        screen.fill("black")  # black screen
 
-        # update character model
-        player.update(dt)  # call update method to allow rotation -- must be BEFORE draw...
+        # update all updatable models model
+        updatable.update(dt)  # call update method to allow rotation -- must be BEFORE draw...
 
-        # draw player after
-        player.draw(screen)  # after filling to layer on top, before refreshing to stay
+        # Draw all sprites
+        for sprite in drawable:
+            sprite.draw(screen)  # after filling to layer on top, before refreshing to stay
 
-        pygame.display.flip()  # pygame method, refresh the sccreen
+        pygame.display.flip()  # Update display
 
         dt = clock.tick(FPS) / 1000  # default miliseconds, convert to seconds, FPS to 60 from constants
 
