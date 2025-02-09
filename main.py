@@ -7,6 +7,7 @@ import pygame
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 from constants import *  # wildcard imports are bad, but fine for constants in this projet
 
 
@@ -23,10 +24,14 @@ def main():
     updatable = pygame.sprite.Group()  # objects that can update
     drawable = pygame.sprite.Group()  # all objects that can be rendered
     asteroids = pygame.sprite.Group()  # contains all asteroids
+    shots = pygame.sprite.Group()  # contains all player bullets
 
     # Class variables (static fields) container, then container
     # Register groups with Player class
     Player.containers = (updatable, drawable)
+
+    # Register groups with Shot class
+    Shot.containers = (shots, updatable, drawable)
 
     # Register groups with Asteroid class
     Asteroid.containers = (asteroids, updatable, drawable)
