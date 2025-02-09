@@ -5,6 +5,8 @@
 # throughout this file
 import pygame
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 from constants import *  # wildcard imports are bad, but fine for constants in this projet
 
 
@@ -19,14 +21,24 @@ def main():
 
     # Set up sprite groups (empty for now)
     updatable = pygame.sprite.Group()  # objects that can update
-    drawable = pygame.sprite.Group()  #all objects that can be rendered
+    drawable = pygame.sprite.Group()  # all objects that can be rendered
+    asteroids = pygame.sprite.Group()  # contains all asteroids
 
     # Class variables (static fields) container, then container
     # Register groups with Player class
     Player.containers = (updatable, drawable)
 
+    # Register groups with Asteroid class
+    Asteroid.containers = (asteroids, updatable, drawable)
+
+    # no rendering, only updates. manages asteroids
+    AsteroidField.containers = (updatable)
+
     # Create player in centre of screen
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    # Create an AsteroidField object
+    asteroid_field = AsteroidField()
 
     # Setup game clcok
     clock = pygame.time.Clock()  # create an clock object to set frame rate
