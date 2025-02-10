@@ -71,7 +71,7 @@ def main():
         for asteroid in asteroids:  # loop asteroids
             for shot in shots:  # loop shots
                 if asteroid.collision(shot):  # check all asteroids v shot
-                    asteroid.kill()  # remove asteroid from group
+                    asteroid.split()  # SPLIT asteroid
                     shot.kill()  # remove shot from group (else piercing)
 
         # Draw all sprites
