@@ -9,6 +9,7 @@ class Player(CircleShape):
     def __init__(self, x , y):
         super().__init__(x, y, PLAYER_RADIUS)  # inherit from parent
         self.rotation = 0  # init angle at 0°
+        self.shoot_timer = 0  # init at 0s
 
     def triangle(self):
         # forward vector points in ship's current direction (based on rotation)
@@ -37,12 +38,17 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * dt  # modify position relative to vector * speed change over time
 
     def shoot(self):
+        if self.shoot_timer > 0:  # if cooldown timer still > 0
+            return  # prevent shoot
+        self.shoot_timer = PLAYER_SHOOT_COOLDOWN  # from 0 to cooldown duration
         shot = Shot(self.position.x, self.position.y)  # create Shot obj at player position
         forward = pygame.Vector2(0, 1).rotate(self.rotation)  # directional vector, with rotation to align with render rotation
         shot.velocity = forward * PLAYER_SHOOT_SPEED  # define shot velocity as vector * constant
 
 
     def update(self, dt):
+        if self.shoot_timer > 0:  # if a shot has fired
+            self.shoot_timer -= dt  # decrease by dt with each update
         keys = pygame.key.get_pressed()  # get keyboard input
 
         # rotate left
@@ -64,3 +70,4 @@ class Player(CircleShape):
          # shoot
         if keys[pygame.K_SPACE]:  # spacebar
             self.shoot()
+            

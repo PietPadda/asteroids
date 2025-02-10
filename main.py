@@ -66,6 +66,13 @@ def main():
             if asteroid.collision(player):  # check all asteroids v player
                 print("Game Over!")  # last bit of text...
                 return  # exit game
+            
+        # after update positions, do collision check of asteroids v shot
+        for asteroid in asteroids:  # loop asteroids
+            for shot in shots:  # loop shots
+                if asteroid.collision(shot):  # check all asteroids v shot
+                    asteroid.kill()  # remove asteroid from group
+                    shot.kill()  # remove shot from group (else piercing)
 
         # Draw all sprites
         for sprite in drawable:
